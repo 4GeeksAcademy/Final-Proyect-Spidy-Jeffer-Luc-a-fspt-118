@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./PaginaTienda.css";
 
 export const PaginaTienda = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [tienda, setTienda] = useState(null);
-
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchTienda = async () => {
       try {
-        const response = await fetch(`/api/tienda/${id}`);
+        const response = await fetch(backendUrl+`/api/tienda/${id}`);
         if (!response.ok) throw new Error("Error al cargar la tienda");
         const data = await response.json();
-        setTienda(data);
+        setTienda(data.tienda);
       } catch (error) {
-        setTienda({
-          nombre: `Tienda ${id}`,
-          descripcion: "Descubre productos únicos y experiencias increíbles.",
-          imagen: "/images/default-store.jpg",
-          productos: [
-            { id: 1, nombre: "Producto A", precio: "25 €" },
-            { id: 2, nombre: "Producto B", precio: "40 €" },
-            { id: 3, nombre: "Producto C", precio: "15 €" },
-          ],
-        });
+       console.log(error)
       } finally {
         setLoading(false);
       }
@@ -46,13 +39,13 @@ export const PaginaTienda = () => {
     <div className="pagina-tienda">
       <section className="tienda-hero">
         <img
-          src={tienda?.imagen}
-          alt={tienda?.nombre}
+          src={tienda?.logo_url}
+          alt={tienda?.nombre_tienda}
           className="tienda-imagen"
         />
         <div className="tienda-info">
-          <h1>{tienda?.nombre}</h1>
-          <p>{tienda?.descripcion}</p>
+          <h1>{tienda?.nombre_tienda}</h1>
+          <p>{tienda?.descripcion_tienda}</p>
         </div>
       </section>
 
@@ -60,10 +53,13 @@ export const PaginaTienda = () => {
         <h2>Productos destacados</h2>
         <div className="productos-grid">
           {tienda?.productos.map((p) => (
-            <div key={p.id} className="producto-card">
-              <h3>{p.nombre}</h3>
-              <p>{p.precio}</p>
-              <button className="comprar-btn">Comprar</button>
+            <div key={p.id} className="producto-card card d-flex flex-column">
+              <img className="card-img-top " src={p.imagenes} alt={p.nombre_producto} />
+              <div className="mt-auto">
+              <h3>{p.nombre_producto}</h3>
+              <p>${p.precio.toFixed(2)}</p>
+              <button className="comprar-btn" onClick={()=>navigate("/single/"+p.id)}>Detalles</button>
+              </div>
             </div>
           ))}
         </div>

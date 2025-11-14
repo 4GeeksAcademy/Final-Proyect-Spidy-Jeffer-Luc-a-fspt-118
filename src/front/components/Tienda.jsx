@@ -6,11 +6,16 @@ import userServices from "../services/user.services";
 import CloudinaryComponent from "./cloudinary";
 import tiendaServices from "../services/tienda.services";
 import { Link, useNavigate } from "react-router-dom";
+import productServices from "../services/product.services";
 export const Tienda = () => {
 
   const { store, dispatch } = useGlobalReducer()
-  
   const navigate = useNavigate()
+    
+  useEffect(()=>{
+    if (!store.tienda) navigate('/crear_tienda') 
+  },[])
+
   const handleEdit = () => {
     if (edit) {
       if (JSON.stringify(store.tienda) !== JSON.stringify(tiendaData)) {
@@ -20,15 +25,22 @@ export const Tienda = () => {
     setEdit(!edit);
   }
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    tiendaServices.crearTienda(tiendaData).then(data => {
-      if (data.tienda) dispatch({ type: "upload_tienda", payload: data.tienda })
-    })
 
+  const handleEditProducto = (e, prod)=>{
+    e.stopPropagation()
+    dispatch({type: "editar_productos", payload: prod})
+    navigate('/edit_product')
   }
 
-
+  const handleDelete = (e,id) => {
+    e.stopPropagation()
+    productServices.delete(id).then(data=>{
+      if (data.tienda) {
+                    dispatch({type: "update_product_tienda", payload: data.tienda})
+                    navigate('/mi_tienda')
+                }
+    })
+  }
 
   return (
     <>
@@ -46,7 +58,7 @@ export const Tienda = () => {
             <button className="btn text-white" onClick={()=>navigate('/crear_tienda')}>Editar <span className="fa fa-pen"></span> </button>
           </div>
           <div className="card-body p-5 ">
-            <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+            <section className="needs-validation" >
               <div className="d-flex justify-content-start align-items-center">
                 <img
                   src={store.tienda?.logo_url || 'https://secure.gravatar.com/avatar/?s=80&d=mm&r=g'}
@@ -88,8 +100,8 @@ export const Tienda = () => {
                         
                       </div>
                     </div>
-                    <button className="btn btn-danger mb3" onClick={()=>navigate('/edit_product')}>Editar <span className="fa fa-pen"></span> </button>
-                    <button className="btn btn-danger mb3 ms-3" onClick={()=>navigate('/edit_product')}><span className="fa fa-trash"></span> </button>
+                    <button role="button" className="btn btn-danger mb3" onClick={(e)=> handleEditProducto(e,prod)}>Editar <span className="fa fa-pen"></span> </button>
+                    <button role='button' className="btn btn-danger mb3 ms-3" onClick={(e)=>handleDelete(e,prod.id)}><span className="fa fa-trash"></span> </button>
                   </>
                     
                   
@@ -100,7 +112,7 @@ export const Tienda = () => {
               ) : (
                 <p className="text-center text-muted">No hay productos aún.</p>
               )}
-            </form>
+            </section>
           </div>
         </div>
       </div>

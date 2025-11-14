@@ -60,7 +60,7 @@ productServices.recibirProductos = async () => {
 
 productServices.editar_productos = async (formData) => {
     try {
-        const resp = await fetch(url + '/api/editar_productos', {
+        const resp = await fetch(url + '/api/editar_productos/'+formData.id, {
             method: "PUT",
             headers: {
                 "Content-Type": 'application/json',
@@ -69,8 +69,9 @@ productServices.editar_productos = async (formData) => {
             body: JSON.stringify(formData)
         })
         if (!resp.ok) throw new Error('error editing producto')
-        
-        const data = resp.json()
+        const data = await resp.json()
+        localStorage.setItem('tienda', JSON.stringify(data.tienda))
+        localStorage.setItem('producto', JSON.stringify(data.tienda.productos))
         return data
 
     } catch (error) {
@@ -78,7 +79,25 @@ productServices.editar_productos = async (formData) => {
     }
 }
 
+productServices.delete = async id => {
+     try {
+        const resp = await fetch(url + '/api/delete_productos/'+id, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+        })
+        if (!resp.ok) throw new Error('error editing producto')
+        const data = await resp.json()
+        localStorage.setItem('tienda', JSON.stringify(data.tienda))
+        localStorage.setItem('producto', JSON.stringify(data.tienda.productos))
+        return data
 
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 
 export default productServices

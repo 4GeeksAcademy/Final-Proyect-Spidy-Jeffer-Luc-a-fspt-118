@@ -8,6 +8,7 @@ export const initialStore = () => {
     message: null,
     product_details: null,
     buy_producto: null,
+    edit_product:null,
     productos_generales:
       JSON.parse(localStorage.getItem("productosGenerales")) || null,
     todos: [
@@ -27,6 +28,13 @@ export const initialStore = () => {
 
 export default function storeReducer(store, action = {}) {
   switch (action.type) {
+    case "update_product_tienda":{
+      return {
+        ...store,
+        tienda: action.payload,
+        producto: action.payload.productos
+      }
+    }
     case "buy":
       return {
         ...store,
@@ -50,7 +58,6 @@ export default function storeReducer(store, action = {}) {
       };
 
     case "crear_mis_productos":
-      console.log("------------------------", action.payload);
       return {
         ...store,
         tienda: action.payload,
@@ -60,7 +67,7 @@ export default function storeReducer(store, action = {}) {
     case "editar_productos":
       return {
         ...store,
-        producto: action.payload.productos,
+        edit_product: action.payload,
       }
 
     case "editar_tienda":

@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const Header = () => {
+  const {store, dispatch} = useGlobalReducer()
   return (
    <section className="hero">
   <div className="container">
@@ -21,9 +23,13 @@ export const Header = () => {
           {/* Botones */}
           <div className="d-flex flex-column flex-sm-row gap-2 gap-sm-3 justify-content-center justify-content-lg-start hero-buttons">
             <Link to="/explorar" className="btn primary">Productos ➝</Link>
-            <Link to="/login" className="btn secondary">
-              <i className="fas fa-user me-2"></i> Login to Account
-            </Link>
+         {localStorage.getItem('token')?  
+              <Link className="btn secondary" to="/mi_tienda">
+                  Tu tienda  ➝
+              </Link>
+         :    <Link to="/login" className="btn secondary">
+              <i className="fas fa-user me-2"></i> Inicia sesión ➝
+            </Link>}
           </div>
 
           {/* Stats */}

@@ -52,6 +52,7 @@ class User(db.Model):
             'cp': self.cp,
             "registro_fecha": self.registro_fecha,
             "email": self.email,
+            "avatar": self.avatar,
             "tiendas": [t.serialize() for t in self.tiendas] if self.tiendas else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
@@ -151,7 +152,7 @@ class Productos(db.Model):
             "imagenes": self.imagenes,
             "estado": self.estado,
             "fecha_subida": self.fecha_subida,
-            "tienda": {"nombre": self.tienda.nombre_tienda} if self.tienda else None,
+            "tienda": {"nombre": self.tienda.nombre_tienda, "owner_id":self.tienda.owner_id } if self.tienda else None,
             "resenas": [r.serialize() for r in self.resenas] if self.resenas else None,
             "favoritos": [f.serialize() for f in self.favoritos] if self.favoritos else None,
         }

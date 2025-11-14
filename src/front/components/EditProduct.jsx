@@ -8,22 +8,22 @@ const EditProduct = () => {
 
     const { store, dispatch } = useGlobalReducer();
     const navigate = useNavigate();
-    const [producto, setProducto] = useState(store.producto);
+    const [producto, setProducto] = useState(store.edit_product);
     
     const handleEdit = (e) => {
         e.preventDefault();
-        if (store.producto?.nombre_producto) {
+       
             productServices.editar_productos(producto).then((data) => {
-                if (data.productos) {
-                    dispatch({type: "editar_producto", payload: data.productos})
-                    localStorage.setItem('productos',JSON.stringify(data.productos))
+              if (data.tienda) {
+
+                    dispatch({type: "update_product_tienda", payload: data.tienda})
                     navigate('/mi_tienda')
                 }
                 if (!data.success) {
                     alert(data.error)
                 }
             })
-        }
+        
     }
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -108,7 +108,7 @@ const EditProduct = () => {
                   onChange={handleChange}
                   value={producto.categoria_producto}
                   className="form-select border-danger focus-ring focus-ring-danger" defaultValue="">
-                  <option value="" disabled >
+                  <option value="" disabled default>
                     Selecciona una categoría
                   </option>
                   <option value="ropa">Ropa</option>

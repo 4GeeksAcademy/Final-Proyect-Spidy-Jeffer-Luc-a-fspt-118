@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthServices from "../services/auth.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -25,13 +25,20 @@ const Login = () => {
                 console.log(data)
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('user', JSON.stringify(data.user))
-                localStorage.setItem('producto', JSON.stringify(data.user.tiendas[0].productos))
+                if (data.user?.tienda?.length>0){
+                    localStorage.setItem('producto', JSON.stringify(data.user.tiendas[0].productos))
+                }
                 console.log(data)
                 dispatch({ type: 'login', payload: data.user })
                 return navigate('/perfil')
             }
         })
     }
+
+    useEffect(()=>{
+        if (store.user || localStorage.getItem('token') ) navigate('/explorar')
+    },[])
+
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100 bg-light">

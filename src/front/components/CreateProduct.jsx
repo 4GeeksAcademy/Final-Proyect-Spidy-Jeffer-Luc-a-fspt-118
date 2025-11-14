@@ -116,7 +116,7 @@ export const CreateProduct = () => {
                   onChange={handleChange}
                   value={productData.categoria_producto}
                   className="form-select border-danger focus-ring focus-ring-danger" defaultValue="">
-                  <option value="" disabled >
+                  <option value="" disabled default>
                     Selecciona una categoría
                   </option>
                   <option value="ropa">Ropa</option>

@@ -52,6 +52,9 @@ AuthServices.register = async (formData) => {
 AuthServices.logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+    localStorage.removeItem('producto')
+    localStorage.removeItem('tienda')
+    
     return true
 }
 

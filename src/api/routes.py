@@ -282,15 +282,16 @@ def handle_recibir_productos():
     producto = [p.serialize() for p in producto]
     return jsonify({'producto': producto}), 200
 
-@api.route('/editar_productos', methods=['PUT'])
+@api.route('/editar_productos/<int:id>', methods=['PUT'])
 @jwt_required()
-def handle_editar_productos():
-    id = get_jwt_identity()
-    stm = select(Productos).where(Productos.tienda_id == id)
-    productos = db.session.execute(stm).scalar_one_or_none()
+def handle_editar_productos(id):
+    uid = get_jwt_identity()
+    productos = db.session.get(Productos, id)
+    stm = select(Tienda).where(Tienda.owner_id == uid)
+    tienda = db.session.execute(stm).scalar_one_or_none()
+    if str(uid) != str(productos.tienda.owner_id):
+        return jsonify({"msg": "producto no encontrado"}), 404
     body = request.get_json()
-
-    productos.tienda_id = body.get('tienda_id',productos.tienda_id),
     productos.nombre_producto = body.get('nombre_producto',productos.nombre_producto),
     productos.descripcion_producto = body.get('descripcion_producto',productos.descripcion_producto),
     productos.precio = body.get('precio',productos.precio),
@@ -301,11 +302,26 @@ def handle_editar_productos():
     productos.imagenes = body.get('imagenes',productos.imagenes),
     productos.estado = body.get('estado',productos.estado),
     db.session.commit()
-    return jsonify({'success': True, 'msg': 'Producto editado con exito', 'tienda': productos.serialize()}), 201
+    return jsonify({'success': True, 'msg': 'Producto editado con exito', "tienda": tienda.serialize()}), 201
 
-@api.route('/delete_productos', method=['DELETE'])
+@api.route('/delete_productos/<int:id>', methods=['DELETE'])
 @jwt_required()
-def handle_delete_productos():
-    id = get_jwt_identity()
+def handle_delete_productos(id):
+    uid = get_jwt_identity()
+    productos = db.session.get(Productos, id)
+    stm = select(Tienda).where(Tienda.owner_id == uid)
+    tienda = db.session.execute(stm).scalar_one_or_none()
+    if str(uid) != str(productos.tienda.owner_id):
+        return jsonify({"msg": "producto no encontrado"}), 404
+    db.session.delete(productos)
+    db.session.commit()
+
+    return jsonify({'success': True, 'msg': 'Producto eliminado con exito', "tienda": tienda.serialize()}), 201
     
-    
+
+@api.route('/tienda/<int:id>')
+def handle_get_tienda(id):
+    tienda = db.session.get(Tienda, id)
+    if not tienda:
+        return jsonify({'success': False, 'msg':"tienda no encontrada"}),200        
+    return jsonify({'success': True, 'tienda':tienda.serialize()}),200
