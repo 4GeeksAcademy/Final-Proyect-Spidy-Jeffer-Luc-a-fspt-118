@@ -86,7 +86,7 @@ export default function QRGenerator() {
                         {/* Bloques de beneficios */}
                         <div className="mb-3 p-3 rounded-3 d-flex align-items-start bg-gradient-danger">
                             <div className="me-3 text-danger fs-1">🗹</div>
-                           
+
 
                             <div>
                                 <h5 className="mb-1">Compartir instantaneamente.</h5>
@@ -108,9 +108,9 @@ export default function QRGenerator() {
                         </div>
 
                         <div className="mb-3 p-3 rounded-3 d-flex align-items-start bg-gradient-danger">
-                            
+
                             <div className="me-3 fs-1 text-danger">🗹</div>
-                           
+
                             <div>
                                 <h5 className="mb-1 fw-semibold">Customizable</h5>
                                 <p className="mb-0 small">
@@ -119,8 +119,8 @@ export default function QRGenerator() {
                             </div>
                         </div>
 
-                       
-                        
+
+
                     </div>
 
                     {/* Columna Derecha - Imagen */}
@@ -154,7 +154,7 @@ export default function QRGenerator() {
                             onClick={generateQR}
                         >
                             Generar QR
-                            
+
                         </button>
 
                         {error && <p className="text-danger mt-3">{error}</p>}

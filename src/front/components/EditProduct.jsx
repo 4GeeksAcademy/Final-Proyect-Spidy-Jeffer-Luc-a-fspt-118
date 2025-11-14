@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import productServices from "../services/product.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
@@ -6,30 +6,27 @@ import CloudinaryComponent from "./cloudinary";
 
 const EditProduct = () => {
 
-    const { store, dispatch } = useGlobalReducer();
-    const navigate = useNavigate();
-    const [producto, setProducto] = useState(store.edit_product);
-    
-    const handleEdit = (e) => {
-        e.preventDefault();
-       
-            productServices.editar_productos(producto).then((data) => {
-              if (data.tienda) {
+  const { store, dispatch } = useGlobalReducer();
+  const navigate = useNavigate();
+  const [producto, setProducto] = useState(store.edit_product);
 
-                    dispatch({type: "update_product_tienda", payload: data.tienda})
-                    navigate('/mi_tienda')
-                }
-                if (!data.success) {
-                    alert(data.error)
-                }
-            })
-        
-    }
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setProducto({ ...producto, [name]: value })
-    }
-    return (
+  const handleEdit = (e) => {
+    e.preventDefault();
+    productServices.editar_productos(producto).then((data) => {
+      if (data.tienda) {
+        dispatch({ type: "update_product_tienda", payload: data.tienda })
+        navigate('/mi_tienda')
+      }
+      if (!data.success) {
+        alert(data.error)
+      }
+    })
+  }
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setProducto({ ...producto, [name]: value })
+  }
+  return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light py-5">
       <div
         className="card shadow-lg border-0 rounded-4 p-4"
@@ -67,7 +64,7 @@ const EditProduct = () => {
             <div className="mb-3 border border-danger rounded p-3" >
               <label htmlFor="imagen" className="form-label fw-semibold">
                 Imagen del Producto
-              <img src={producto.imagenes} alt={producto.nombre_producto || 'carga una imagen'} />
+                <img src={producto.imagenes} alt={producto.nombre_producto || 'carga una imagen'} />
               </label>
 
               <CloudinaryComponent product={true} returnUrl={setProducto} state={producto} product_id={producto.id} />

@@ -14,12 +14,12 @@ export function StoreProvider({ children }) {
     const [store, dispatch] = useReducer(storeReducer, initialStore())
     // Provide the store and dispatch method to all child components.
     useEffect(() => {
-        if (!localStorage.getItem("productosGenerales")) {
-            productServices.recibirProductos().then(data => {
-                dispatch({ type: 'productos_generales', payload: data.producto })
-                localStorage.setItem('productosGenerales', JSON.stringify(data.producto))
-            })
-        }
+
+        productServices.recibirProductos().then(data => {
+            dispatch({ type: 'productos_generales', payload: data.producto })
+            localStorage.setItem('productosGenerales', JSON.stringify(data.producto))
+        })
+
     }, [])
     return <StoreContext.Provider value={{ store, dispatch }}>
         {children}

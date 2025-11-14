@@ -54,7 +54,7 @@ AuthServices.logout = () => {
     localStorage.removeItem('user')
     localStorage.removeItem('producto')
     localStorage.removeItem('tienda')
-    
+
     return true
 }
 

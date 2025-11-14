@@ -75,7 +75,7 @@ export const CreateProduct = () => {
             <div className="mb-3 border border-danger rounded p-3" >
               <label htmlFor="imagen" className="form-label fw-semibold">
                 Imagen del Producto
-              <img src={productData.imagenes} alt={productData.nombre_producto || 'carga una imagen'} />
+                <img src={productData.imagenes} alt={productData.nombre_producto || 'carga una imagen'} />
               </label>
 
               <CloudinaryComponent product={true} returnUrl={setProductData} state={productData} product_id={productData.id} />

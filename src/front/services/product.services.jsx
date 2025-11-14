@@ -60,7 +60,7 @@ productServices.recibirProductos = async () => {
 
 productServices.editar_productos = async (formData) => {
     try {
-        const resp = await fetch(url + '/api/editar_productos/'+formData.id, {
+        const resp = await fetch(url + '/api/editar_productos/' + formData.id, {
             method: "PUT",
             headers: {
                 "Content-Type": 'application/json',
@@ -80,8 +80,8 @@ productServices.editar_productos = async (formData) => {
 }
 
 productServices.delete = async id => {
-     try {
-        const resp = await fetch(url + '/api/delete_productos/'+id, {
+    try {
+        const resp = await fetch(url + '/api/delete_productos/' + id, {
             method: "DELETE",
             headers: {
                 "Content-Type": 'application/json',

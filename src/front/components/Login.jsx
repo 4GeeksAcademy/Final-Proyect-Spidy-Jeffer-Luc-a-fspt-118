@@ -25,7 +25,7 @@ const Login = () => {
                 console.log(data)
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('user', JSON.stringify(data.user))
-                if (data.user?.tienda?.length>0){
+                if (data.user?.tienda?.length > 0) {
                     localStorage.setItem('producto', JSON.stringify(data.user.tiendas[0].productos))
                 }
                 console.log(data)
@@ -35,9 +35,9 @@ const Login = () => {
         })
     }
 
-    useEffect(()=>{
-        if (store.user || localStorage.getItem('token') ) navigate('/explorar')
-    },[])
+    useEffect(() => {
+        if (store.user || localStorage.getItem('token')) navigate('/explorar')
+    }, [])
 
 
     return (

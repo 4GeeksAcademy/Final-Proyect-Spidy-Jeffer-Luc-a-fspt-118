@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import cloudinaryServices from "../services/cloudinary.services";
 import useGlobalReducer from "../hooks/useGlobalReducer";
-function CloudinaryComponent({avatar = false, product=false, tienda=false, returnUrl, state, product_id}) {
+function CloudinaryComponent({ avatar = false, product = false, tienda = false, returnUrl, state, product_id }) {
     const [file, setFile] = useState(null);
-    const {store,dispatch} = useGlobalReducer();
+    const { store, dispatch } = useGlobalReducer();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const handleSubmit = async (e) => {
@@ -12,17 +12,17 @@ function CloudinaryComponent({avatar = false, product=false, tienda=false, retur
         if (!file) return setError("Selecciona una imagen");
         try {
             setLoading(true);
-            const data = await cloudinaryServices.uploadImage(file, {avatar, product, tienda});
+            const data = await cloudinaryServices.uploadImage(file, { avatar, product, tienda });
             //actualizar avatar en store
-            if (avatar) dispatch({type:'update_avatar',payload:data.url})
+            if (avatar) dispatch({ type: 'update_avatar', payload: data.url })
             if (tienda) {
-                dispatch({type:'update_tienda_logo',payload:data.url})
-                returnUrl({...tienda, ['logo_url']:data.url})
+                dispatch({ type: 'update_tienda_logo', payload: data.url })
+                returnUrl({ ...tienda, ['logo_url']: data.url })
                 return data.url
             }
             if (product) {
-                const prod = await cloudinaryServices.uploadImage(file, {avatar, product, tienda}, product_id )
-                returnUrl({...state, ['imagenes']: prod.url })
+                const prod = await cloudinaryServices.uploadImage(file, { avatar, product, tienda }, product_id)
+                returnUrl({ ...state, ['imagenes']: prod.url })
                 return prod
             }
             return data;
@@ -40,16 +40,16 @@ function CloudinaryComponent({avatar = false, product=false, tienda=false, retur
     }, [file]);
     return (
         <div style={{ padding: 30 }}>
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                        setFile(e.target.files[0]);
-                        //setUrl("");
-                        setError("");
-                    }}
-                />
-                    {loading && "Subiendo..."}
+            <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                    setFile(e.target.files[0]);
+                    //setUrl("");
+                    setError("");
+                }}
+            />
+            {loading && "Subiendo..."}
             {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
     );

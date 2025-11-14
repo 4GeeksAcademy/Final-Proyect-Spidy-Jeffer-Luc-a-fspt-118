@@ -12,12 +12,12 @@ export const PaginaTienda = () => {
   useEffect(() => {
     const fetchTienda = async () => {
       try {
-        const response = await fetch(backendUrl+`/api/tienda/${id}`);
+        const response = await fetch(backendUrl + `/api/tienda/${id}`);
         if (!response.ok) throw new Error("Error al cargar la tienda");
         const data = await response.json();
         setTienda(data.tienda);
       } catch (error) {
-       console.log(error)
+        console.log(error)
       } finally {
         setLoading(false);
       }
@@ -56,9 +56,9 @@ export const PaginaTienda = () => {
             <div key={p.id} className="producto-card card d-flex flex-column">
               <img className="card-img-top " src={p.imagenes} alt={p.nombre_producto} />
               <div className="mt-auto">
-              <h3>{p.nombre_producto}</h3>
-              <p>${p.precio.toFixed(2)}</p>
-              <button className="comprar-btn" onClick={()=>navigate("/single/"+p.id)}>Detalles</button>
+                <h3>{p.nombre_producto}</h3>
+                <p>${p.precio.toFixed(2)}</p>
+                <button className="comprar-btn" onClick={() => navigate("/single/" + p.id)}>Detalles</button>
               </div>
             </div>
           ))}
